@@ -27,4 +27,8 @@ actor DKeeper {
      Debug.print(debug_show(notes));
 
   };
+  //? make query to it's get faster res & give it to react front as an array use toArray method:
+  public query func readNotes(): async [Note]{
+    return List.toArray(notes);
+  };
 }
