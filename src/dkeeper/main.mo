@@ -1,6 +1,9 @@
 // ?This is Backend:
 import List "mo:base/List";
 import Debug "mo:base/Debug";
+import take "mo:base/take";
+import drop "mo:base/drop";
+import append "mo:base/append";
 
 actor DKeeper {
 
@@ -10,8 +13,8 @@ actor DKeeper {
     content: Text;
 
   };
-  // ?<STORE IN THE BK> make a note list with empty list(nil):
-  var notes : List.List<Note> = List.nil<Note>();
+  // ?<STORE IN THE BK> make a note list with empty list(nil)/ stable make the notes updated not get delete with every deploy:
+  stable  var notes : List.List<Note> = List.nil<Note>();
 
   // ? <Create> Function / will take title & content from the inputs in jsx files:
   public func createNote(titleText: Text, contentText: Text){
@@ -30,5 +33,16 @@ actor DKeeper {
   //? make query to it's get faster res & give it to react front as an array use toArray method:
   public query func readNotes(): async [Note]{
     return List.toArray(notes);
+  };
+
+  //? <DELETE> func:
+  public func removeNote(id: Nat){
+    //? Take method = take/choose the first element you give of a number:
+    listFront =  List.take(notes,index);
+    //? Drop method = delete from a list:
+    listBack = List.drop(notes,index);
+    //? Append method = put list in a list:
+    notes := List.append(listFront,listBack);
+
   };
 }
